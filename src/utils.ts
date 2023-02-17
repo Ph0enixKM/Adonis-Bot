@@ -11,3 +11,7 @@ export const getGuild = (client: Client, guildName: string): any => {
 export const getRole = (client: Client, roleName: string): any => {
     return getGuild(client, 'Self Improvement Poland').roles.cache.find((role: any) => role.name === roleName)
 }
+
+export const chooseRandom = (array: any[]): any => {
+    return array[Math.floor(Math.random() * array.length)]
+}

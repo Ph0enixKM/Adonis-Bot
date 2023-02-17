@@ -1,4 +1,5 @@
 import { Message } from "discord.js"
+import { chooseRandom } from "./utils"
 
 export default class MessageProcessing {
     private message: Message
@@ -18,6 +19,21 @@ export default class MessageProcessing {
         const chad = this.getEmojiByName('chad')
         if (words.find((word) => this.message.content.replace(/:[^:]+:/, '').match(word))) {
             if (chad) this.message.react(chad);
+        }
+    }
+
+    public goodNight() {
+        const replies = [
+            'Dobranoc szefie 🫶',
+            'Śpij dobrze bracie 💪',
+            'Śpij spokojnie 😴',
+            'Śpij z aniołami przyjacielu 🙏',
+            'Wyśpij się porządnie 🌙',
+            'Rano będziesz miał energię na cały dzień 🌞',
+            'Jutro zdobędziesz wszystko co chcesz 🤩'
+        ]
+        if (this.message.content.match(/dobranoc/i)) {
+            this.message.reply(chooseRandom(replies))
         }
     }
 }
