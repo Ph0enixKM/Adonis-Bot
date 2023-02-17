@@ -1,4 +1,4 @@
 {
     "uid": "bot",
-    "script": "./app.js"
+    "script": "/bot/app.js"
 }
