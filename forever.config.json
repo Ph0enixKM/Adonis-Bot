@@ -1,4 +1,5 @@
 {
     "uid": "bot",
-    "script": "app.js"
+    "script": "app.js",
+    "watch": true
 }
