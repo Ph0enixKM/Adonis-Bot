@@ -20,10 +20,13 @@
   },
   "homepage": "https://github.com/Ph0enixKM/Adonis-Bot#readme",
   "dependencies": {
+    "dayjs": "^1.11.7",
     "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "node-cron": "^3.0.2"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.7",
     "tsc-watch": "^6.0.0"
   }
 }

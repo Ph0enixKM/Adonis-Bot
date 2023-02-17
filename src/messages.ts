@@ -16,7 +16,7 @@ export default class MessageProcessing {
     public reactAdonis() {
         const words = ['adonis', 'adonisie', 'adonisy', 'chadzie', 'chad', 'chady']
         const chad = this.getEmojiByName('chad')
-        if (words.find((word) => this.message.content.match(word))) {
+        if (words.find((word) => this.message.content.replace(/:[^:]+:/, '').match(word))) {
             if (chad) this.message.react(chad);
         }
     }
