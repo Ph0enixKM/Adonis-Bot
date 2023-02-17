@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { Message } from "discord.js"
 import { chooseRandom } from "./utils"
 
@@ -7,6 +8,8 @@ export default class MessageProcessing {
     constructor(message: Message) {
         this.message = message
         this.reactAdonis()
+        this.goodMorning()
+        this.goodNight()
     }
 
     public getEmojiByName(name: string) {
@@ -33,7 +36,26 @@ export default class MessageProcessing {
             'Jutro zdobędziesz wszystko co chcesz 🤩'
         ]
         if (this.message.content.match(/dobranoc/i)) {
-            this.message.reply(chooseRandom(replies))
+            if (dayjs().format('HH:mm') >= '20:00' && dayjs().format('HH:mm') <= '24:00') {
+                this.message.reply(chooseRandom(replies))
+            }
+        }
+    }
+
+    public goodMorning() {
+        const replies = [
+            'Dzień dobry szefie 🫶',
+            'Dzień dobry bracie 💪',
+            'Dzień dobry przyjacielu 🙏',
+            'Zaczynamy dzień od dobrego humoru 🤩',
+            'Dzisiaj będzie świetny dzień 🌙',
+            'Dzisiaj będzie najlepszy dzień w Twoim życiu 🌞',
+            'Rano jest najlepszą porą dnia na realizację marzeń 🌞'
+        ]
+        if (this.message.content.match(/dzień dobry/i)) {
+            if (dayjs().format('HH:mm') >= '04:00' && dayjs().format('HH:mm') <= '09:00') {
+                this.message.reply(chooseRandom(replies))
+            }
         }
     }
 }
