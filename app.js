@@ -25,7 +25,7 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", (message) => {
-    const words = ['adonis', 'adonisie', 'adonisy', 'chadzie']
+    const words = ['adonis', 'adonisie', 'adonisy', 'chadzie', 'chad', 'chady']
     const chad = getEmojiByName(message, 'chad')
     if (words.find((word) => message.content.match(word))) {
         if (chad) message.react(chad);
