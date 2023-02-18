@@ -16,6 +16,7 @@ export default class ChatAI {
     public async run(message: Message) {
         if (this.isRunning) return;
         if (message.channel.type !== ChannelType.GuildText || message.author.bot) return;
+        if (message.channel.name !== '🤖bot-chat') return;
         if (message.content.match(`<@${this.selfId}>`)) {
             const channel: TextChannel = message.channel;
             channel.sendTyping();
