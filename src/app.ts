@@ -4,11 +4,14 @@ import dayjs from 'dayjs';
 import MessageProcessing from './messages';
 import { BOT_NAME, clientConfig } from './config';
 import { getChannel, getMember } from './utils';
+import ChatAI from './chat';
 
 export default class AdonisBot {
     private selfId: string = ''
     private token: string
     private client: Client
+    private message: MessageProcessing = {} as MessageProcessing
+    private chat: ChatAI = {} as ChatAI
 
     constructor() {
         this.token = process.env.TOKEN!;
@@ -22,7 +25,9 @@ export default class AdonisBot {
         this.client.user!.setPresence({ activities: [{ name: `meditation`, type: ActivityType.Competing }] })
         this.client.user!.setStatus('online')
         cron.schedule('* * * * *', this.onEveryMinute.bind(this))
-        this.selfId = getMember(this.client, BOT_NAME);
+        this.selfId = getMember(this.client, BOT_NAME).id;
+        this.message = new MessageProcessing(this.selfId);
+        this.chat = new ChatAI(this.selfId);
         console.log('Connected');
     }
 
@@ -34,6 +39,7 @@ export default class AdonisBot {
     }
 
     private onMessage(message: Message) {
-        new MessageProcessing(message, this.selfId);
+        this.message.run(message)
+        this.chat.run(message)
     }
 }

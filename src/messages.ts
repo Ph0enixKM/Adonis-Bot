@@ -3,16 +3,15 @@ import { Message, ChannelType, MessageType, TextChannel } from "discord.js"
 import { chooseRandom } from "./utils"
 
 export default class MessageProcessing {
-    private message: Message
+    private message: Message = {} as Message
     private selfId: string
 
-    constructor(message: Message, selfId = '') {
-        this.message = message
+    constructor(selfId: string) {
         this.selfId = selfId
-        this.run()
     }
 
-    public async run() {
+    public async run(message: Message) {
+        this.message = message
         if (await this.isValid()) {
             this.reactAdonis()
             this.goodMorning()

@@ -10,6 +10,7 @@ A bot for the Selfimprovement Poland Discord server. It's written in TypeScript.
 
 ```env
 TOKEN="your-bot-token"
+OPEN_AI="your-open-ai-token"
 ```
 
 4. Run the bot with `npm start`
