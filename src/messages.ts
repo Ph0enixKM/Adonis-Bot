@@ -7,6 +7,7 @@ export default class MessageProcessing {
 
     constructor(message: Message) {
         this.message = message
+        if (this.message.author.bot) return;
         this.reactAdonis()
         this.goodMorning()
         this.goodNight()
