@@ -1,5 +1,5 @@
 import {
-  Client, ActivityType, Message, VoiceState,
+  Client, ActivityType, Message, VoiceState, Presence,
 } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
