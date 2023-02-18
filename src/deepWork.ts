@@ -3,7 +3,6 @@ import { addRoles, deleteRoles } from './utils';
 
 export default class DeepWork {
   private selfId: string;
-
   private client: Client;
 
   constructor(selfId: string, client: Client) {
@@ -12,16 +11,25 @@ export default class DeepWork {
   }
 
   public run(oldState: VoiceState, newState: VoiceState) {
-    if (newState.channel !== oldState.channel) {
-      if (newState.member && !newState.channel) { // if disconnect from vc
+    if (newState.channel === oldState.channel) return;
+    if (!newState.member) return;
+    switch (true) {
+      // if disconnect from vc
+      case newState.member && !newState.channel:
         deleteRoles(this.client, newState.member, ['Deep Work']);
-      } else if (newState.member && newState.channel?.name !== 'Deep Work') { // if change to another vc from deep work
+        break;
+      // if change to another vc from deep work
+      case newState.member && newState.channel?.name !== 'Deep Work':
         DeepWork.silentUser(newState, false);
         deleteRoles(this.client, newState.member, ['Deep Work']);
-      } else if (newState.member && newState.channel?.name === 'Deep Work') { // if joins deep work
+        break;
+      // if joins deep work vc
+      case newState.member && newState.channel?.name === 'Deep Work':
         DeepWork.silentUser(newState, true);
         addRoles(this.client, newState.member, ['Deep Work']);
-      }
+        break;
+      default:
+        break;
     }
   }
 

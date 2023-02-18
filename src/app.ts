@@ -11,15 +11,10 @@ import DeepWork from './deepWork';
 
 export default class AdonisBot {
   private selfId = '';
-
   private token: string;
-
   private client: Client;
-
   private message: MessageProcessing = {} as MessageProcessing;
-
   private chat: ChatAI = {} as ChatAI;
-
   private deepWork: DeepWork = {} as DeepWork;
 
   constructor() {
@@ -39,6 +34,7 @@ export default class AdonisBot {
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.selfId, this.client);
+    // eslint-disable-next-line no-console
     console.log('Connected');
   }
 

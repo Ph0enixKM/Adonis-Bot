@@ -8,7 +8,6 @@ import { chooseRandom } from './utils';
 
 export default class MessageProcessing {
   private message: Message = {} as Message;
-
   private selfId: string;
 
   constructor(selfId: string) {

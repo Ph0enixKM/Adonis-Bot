@@ -18,6 +18,7 @@ module.exports = {
      * (() => new AdonisBot());
      */
     'no-new': 0, //
+    '@typescript-eslint/lines-between-class-members': 0,
   },
   root: true,
 };
