@@ -13,6 +13,20 @@ export default class ChatAI {
         this.isRunning = false
     }
 
+    private removeRepeatedText(text: string): string {
+        const sliceSize = 50
+        let all = text.slice(0, sliceSize * 2)
+        for (let i = 0; i < text.length - sliceSize * 2; i += 1) {
+            for (let j = 0; j < all.length - sliceSize * 2; j += 1) {
+                if (all.endsWith(text.slice(j, j + sliceSize))) {
+                    return all.slice(0, i + sliceSize)
+                }
+            }
+            all += text[i + sliceSize * 2]
+        }
+        return text
+    }
+
     public async run(message: Message) {
         if (this.isRunning) return;
         if (message.channel.type !== ChannelType.GuildText || message.author.bot) return;
@@ -22,7 +36,6 @@ export default class ChatAI {
             const channel: TextChannel = message.channel;
             channel.sendTyping();
             this.isRunning = true
-            const timer = setInterval(() => channel.sendTyping(), 1000)
             const prompt = message.content.replace(`<@${this.selfId}>`, "").trim()
             const completion = await this.openai.createCompletion({
                 model: "text-davinci-003",
@@ -30,8 +43,9 @@ export default class ChatAI {
                 max_tokens: 1000,
                 prompt,
             })
-            clearInterval(timer)
-            message.channel.send(completion.data.choices[0].text ?? "Nie wiem co powiedzieć")
+            const text = completion.data.choices[0].text?.trim() ?? "Nie wiem co powiedzieć"
+            const response = this.removeRepeatedText(text)
+            message.channel.send(response)
             this.isRunning = false
         }
     }
