@@ -2,12 +2,13 @@ import { Client, ActivityType, Message } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './messages';
-import { clientConfig } from './config';
-import { getChannel } from './utils';
+import { BOT_NAME, clientConfig } from './config';
+import { getChannel, getMember } from './utils';
 
 export default class AdonisBot {
-    private token: string;
-    private client: Client;
+    private selfId: string = ''
+    private token: string
+    private client: Client
 
     constructor() {
         this.token = process.env.TOKEN!;
@@ -21,6 +22,7 @@ export default class AdonisBot {
         this.client.user!.setPresence({ activities: [{ name: `meditation`, type: ActivityType.Competing }] })
         this.client.user!.setStatus('online')
         cron.schedule('* * * * *', this.onEveryMinute.bind(this))
+        this.selfId = getMember(this.client, BOT_NAME);
         console.log('Connected');
     }
 
@@ -32,6 +34,6 @@ export default class AdonisBot {
     }
 
     private onMessage(message: Message) {
-        new MessageProcessing(message);
+        new MessageProcessing(message, this.selfId);
     }
 }

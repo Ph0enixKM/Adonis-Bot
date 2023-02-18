@@ -9,3 +9,5 @@ export const clientConfig = () => ({
         GatewayIntentBits.MessageContent,
     ],
 })
+
+export const BOT_NAME = 'Adonis Bot';

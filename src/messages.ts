@@ -1,16 +1,45 @@
 import dayjs from "dayjs"
-import { Message } from "discord.js"
+import { Message, ChannelType, MessageType, TextChannel } from "discord.js"
 import { chooseRandom } from "./utils"
 
 export default class MessageProcessing {
     private message: Message
+    private selfId: string
 
-    constructor(message: Message) {
+    constructor(message: Message, selfId = '') {
         this.message = message
-        if (this.message.author.bot) return;
-        this.reactAdonis()
-        this.goodMorning()
-        this.goodNight()
+        this.selfId = selfId
+        this.run()
+    }
+
+    public async run() {
+        if (await this.isValid()) {
+            this.reactAdonis()
+            this.goodMorning()
+            this.goodNight()
+        }
+    }
+
+    public async isValid(): Promise<boolean> {
+        if (this.message.author.bot) return false;
+        if (this.message.channel.type !== ChannelType.GuildText) return false
+        if (this.message.type === MessageType.Reply && this.message?.reference?.messageId) {
+            const channel: TextChannel = this.message.channel
+            const replied = await channel.messages.fetch(this.message.reference.messageId);
+            if (!this.message.author.bot && replied.author.bot) {
+                // Special reply
+                if (this.message.content.match(/^\s*dzi(ęki|ękuję|ena)\s*(wielkie|bardzo)?\s*$/i)) {
+                    const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝']
+                    this.message.react(chooseRandom(reactions))
+                    return false
+                }
+            }
+            if (replied.content.match(`<@${this.selfId}>`)) return true
+            return false
+        }
+        if (this.message.content.match(`<@${this.selfId}>`)) return true
+        if (this.message.content.match(/<@\d+>/)) return false
+        return true
     }
 
     public getEmojiByName(name: string) {
@@ -19,7 +48,7 @@ export default class MessageProcessing {
     }
 
     public reactAdonis() {
-        const words = ['adonis', 'adonisie', 'adonisy', 'chadzie', 'chad', 'chady']
+        const words = ['adonis', 'chad']
         const chad = this.getEmojiByName('chad')
         if (words.find((word) => this.message.content.replace(/:[^:]+:/, '').match(word))) {
             if (chad) this.message.react(chad);
