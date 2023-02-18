@@ -83,7 +83,7 @@ export default class MessageProcessing {
             'Rano jest najlepszą porą dnia na realizację marzeń 🌞'
         ]
         if (this.message.content.match(/dzień dobry/i)) {
-            if (dayjs().format('HH:mm') >= '04:00' && dayjs().format('HH:mm') <= '09:00') {
+            if (dayjs().tz().format('HH:mm') >= '04:00' && dayjs().tz().format('HH:mm') <= '09:00') {
                 this.message.reply(chooseRandom(replies))
             }
         }

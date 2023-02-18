@@ -27,7 +27,7 @@ export default class AdonisBot {
     }
 
     private onEveryMinute() {
-        if (dayjs().format('HH:mm') === '21:37') {
+        if (dayjs().tz().format('HH:mm') === '21:37') {
             const channel = getChannel(this.client, '💬gigachat');
             channel.send('Pamiętajcie bracia o 9h snu!');
         }
