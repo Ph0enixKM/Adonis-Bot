@@ -14,3 +14,13 @@ OPEN_AI="your-open-ai-token"
 ```
 
 4. Run the bot with `npm start`
+
+## Eslint
+To run Eslint
+```
+npx eslint . --ext .ts
+```
+To fix all issues 
+```
+npx eslint . --ext .ts --fix
+```
