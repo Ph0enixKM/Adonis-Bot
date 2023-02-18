@@ -16,7 +16,9 @@ export const clientConfig = () => ({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildVoiceStates,
     ],
-})
+});
 
 export const BOT_NAME = 'Adonis Bot';
