@@ -1,5 +1,5 @@
 import {
-  Client, ActivityType, Message, VoiceState
+  Client, ActivityType, Message, VoiceState,
 } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
@@ -8,14 +8,17 @@ import { BOT_NAME, clientConfig } from './config';
 import { getChannel, getMember } from './utils';
 import ChatAI from './chat';
 import DeepWork from './deepWork';
+import ServerStats from './serverStats';
 
 export default class AdonisBot {
   private selfId = '';
   private token: string;
+
   private client: Client;
   private message: MessageProcessing = {} as MessageProcessing;
   private chat: ChatAI = {} as ChatAI;
   private deepWork: DeepWork = {} as DeepWork;
+  private serverStats: ServerStats = {} as ServerStats;
 
   constructor() {
     this.token = process.env.TOKEN!;
@@ -31,9 +34,12 @@ export default class AdonisBot {
     this.client.user!.setStatus('online');
     cron.schedule('* * * * *', this.onEveryMinute.bind(this));
     this.selfId = getMember(this.client, BOT_NAME).id;
+
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.selfId, this.client);
+    this.serverStats = new ServerStats(this.selfId, this.client);
+
     // eslint-disable-next-line no-console
     console.log('Connected');
   }
@@ -43,6 +49,7 @@ export default class AdonisBot {
       const channel = getChannel(this.client, '💬gigachat');
       channel.send('Pamiętajcie bracia o 9h snu!');
     }
+    this.serverStats.run();
   }
 
   private onMessage(message: Message) {

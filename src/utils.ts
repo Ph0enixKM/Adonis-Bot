@@ -8,6 +8,11 @@ export const getGuild = (client: Client, guildName: string): any => (
   client.guilds.cache.find((guild) => guild.name === guildName)
 );
 
+export const getMatchedChannel = (client: Client, channelName: string): any => {
+  const regex = `${channelName}`;
+  return client.channels.cache.find((channel: any) => new RegExp(regex, 'gm').test(channel.name));
+};
+
 export const getRole = (client: Client, roleName: string): any => (
   getGuild(client, 'Self Improvement Poland').roles.cache.find((role: any) => role.name === roleName)
 );
