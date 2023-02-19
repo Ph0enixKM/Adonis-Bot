@@ -1,12 +1,10 @@
-import { Client, VoiceState } from 'discord.js';
-import { addRoles, deleteRoles } from './utils';
+import {Client, VoiceState} from 'discord.js';
+import {addRoles, deleteRoles} from './utils';
 
 export default class DeepWork {
-  private selfId: string;
   private client: Client;
 
-  constructor(selfId: string, client: Client) {
-    this.selfId = selfId;
+  constructor(client: Client) {
     this.client = client;
   }
 

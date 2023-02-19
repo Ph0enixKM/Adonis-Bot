@@ -19,6 +19,8 @@ module.exports = {
      */
     'no-new': 0, //
     '@typescript-eslint/lines-between-class-members': 0,
+    "@typescript-eslint/indent": 0,
+
   },
   root: true,
 };

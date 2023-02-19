@@ -1,10 +1,6 @@
 import dayjs from 'dayjs';
-import {
-  Message,
-  ChannelType,
-  MessageType,
-} from 'discord.js';
-import { chooseRandom } from './utils';
+import {ChannelType, Message, MessageType,} from 'discord.js';
+import {chooseRandom} from './utils';
 
 export default class MessageProcessing {
   private message: Message = {} as Message;
@@ -27,7 +23,7 @@ export default class MessageProcessing {
     if (this.message.author.bot) return false;
     if (this.message.channel.type !== ChannelType.GuildText) return false;
     if (this.message.type === MessageType.Reply && this.message?.reference?.messageId) {
-      const { channel } = this.message;
+      const {channel} = this.message;
       const replied = await channel.messages.fetch(this.message.reference.messageId);
       if (!this.message.author.bot && replied.author.bot) {
         // Special reply

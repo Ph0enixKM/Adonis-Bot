@@ -1,4 +1,4 @@
-import { GatewayIntentBits } from 'discord.js';
+import {GatewayIntentBits} from 'discord.js';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
