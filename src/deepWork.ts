@@ -2,15 +2,13 @@ import { Client, VoiceState } from 'discord.js';
 import { addRoles, deleteRoles } from './utils';
 
 export default class DeepWork {
-  private selfId: string;
-  private client: Client;
+  private client : Client;
 
-  constructor(selfId: string, client: Client) {
-    this.selfId = selfId;
+  constructor(client : Client) {
     this.client = client;
   }
 
-  public run(oldState: VoiceState, newState: VoiceState) {
+  public run(oldState : VoiceState, newState : VoiceState) {
     if (newState.channel === oldState.channel) return;
     if (!newState.member) return;
     switch (true) {
@@ -33,7 +31,7 @@ export default class DeepWork {
     }
   }
 
-  private static silentUser(state: VoiceState, silent: boolean): void {
+  private static silentUser(state : VoiceState, silent : boolean) : void {
     state.setDeaf(silent);
     state.setMute(silent);
   }

@@ -1,9 +1,5 @@
 import dayjs from 'dayjs';
-import {
-  Message,
-  ChannelType,
-  MessageType,
-} from 'discord.js';
+import { ChannelType, Message, MessageType } from 'discord.js';
 import { chooseRandom } from './utils';
 
 export default class MessageProcessing {
