@@ -1,0 +1,24 @@
+name: Check ESLint
+
+on: [push, pull_request]
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: npx eslint src/ --ext .ts
+
+      - name: Fail if Errors
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git status
+            git diff
+            exit 1
+          fi
