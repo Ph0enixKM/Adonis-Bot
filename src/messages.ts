@@ -3,14 +3,14 @@ import { ChannelType, Message, MessageType } from 'discord.js';
 import { chooseRandom } from './utils';
 
 export default class MessageProcessing {
-  private message : Message = {} as Message;
-  private selfId : string;
+  private message: Message = {} as Message;
+  private selfId: string;
 
-  constructor(selfId : string) {
+  constructor(selfId: string) {
     this.selfId = selfId;
   }
 
-  public async run(message : Message) {
+  public async run(message: Message) {
     this.message = message;
     if (await this.isValid()) {
       this.reactAdonis();
@@ -19,11 +19,11 @@ export default class MessageProcessing {
     }
   }
 
-  public async isValid() : Promise<boolean> {
+  public async isValid(): Promise<boolean> {
     if (this.message.author.bot) return false;
     if (this.message.channel.type !== ChannelType.GuildText) return false;
     if (this.message.type === MessageType.Reply && this.message?.reference?.messageId) {
-      const {channel} = this.message;
+      const { channel } = this.message;
       const replied = await channel.messages.fetch(this.message.reference.messageId);
       if (!this.message.author.bot && replied.author.bot) {
         // Special reply
@@ -41,7 +41,7 @@ export default class MessageProcessing {
     return true;
   }
 
-  public getEmojiByName(name : string) {
+  public getEmojiByName(name: string) {
     const emoji = this.message.guild!.emojis.cache.find((guildEmoji) => name === guildEmoji.name);
     return emoji ? `<:${name}:${emoji.id}>` : null;
   }

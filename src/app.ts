@@ -10,13 +10,13 @@ import ServerStats from './serverStats';
 
 export default class AdonisBot {
   private selfId = '';
-  private token : string;
+  private token: string;
 
-  private client : Client;
-  private message : MessageProcessing = {} as MessageProcessing;
-  private chat : ChatAI = {} as ChatAI;
-  private deepWork : DeepWork = {} as DeepWork;
-  private serverStats : ServerStats = {} as ServerStats;
+  private client: Client;
+  private message: MessageProcessing = {} as MessageProcessing;
+  private chat: ChatAI = {} as ChatAI;
+  private deepWork: DeepWork = {} as DeepWork;
+  private serverStats: ServerStats = {} as ServerStats;
 
   constructor() {
     this.token = process.env.TOKEN!;
@@ -61,12 +61,12 @@ export default class AdonisBot {
     this.serverStats.run();
   }
 
-  private onMessage(message : Message) {
+  private onMessage(message: Message) {
     this.message.run(message);
     this.chat.run(message);
   }
 
-  private onVoiceStateUpdate(oldState : VoiceState, newState : VoiceState) {
+  private onVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {
     this.deepWork.run(oldState, newState);
   }
 }

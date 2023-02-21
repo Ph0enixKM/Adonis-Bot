@@ -6,7 +6,7 @@ export default class ChatAI {
   private selfId : string;
 
   constructor(selfId : string) {
-    const configuration = new Configuration({apiKey: process.env.OPEN_AI,});
+    const configuration = new Configuration({ apiKey: process.env.OPEN_AI });
     this.openai = new OpenAIApi(configuration);
     this.selfId = selfId;
   }
@@ -30,7 +30,7 @@ export default class ChatAI {
     // Allow only channels that match "botchat" in their name
     if (!message.channel.name.match('botchat')) return;
     if (message.content.match(`<@${this.selfId}>`)) {
-      const {channel} = message;
+      const { channel } = message;
       channel.sendTyping();
       const timer = setInterval(() => channel.sendTyping(), 1000);
       const prompt = message.content.replace(`<@${this.selfId}>`, '').trim();

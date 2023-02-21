@@ -33,4 +33,6 @@ export const getMember = (client : Client, memberName : string) : any => (
   getGuild(client, 'Self Improvement Poland').members.cache.find((member : GuildMember) => member.user.username === memberName)
 );
 
-export const chooseRandom = (array : any[]) : any => array[Math.floor(Math.random() * array.length)];
+export const chooseRandom = (array : any[]) : any => array[
+      Math.floor(Math.random() * array.length)
+    ];
