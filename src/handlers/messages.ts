@@ -17,11 +17,13 @@ export default class MessageProcessing {
       this.goodMorning();
       this.goodNight();
     }
+    this.voting();
   }
 
   public async isValid(): Promise<boolean> {
     if (this.message.author.bot) return false;
-    if (this.message.channel.type !== ChannelType.GuildText) return false;
+    if (this.message.channel.type !== ChannelType.GuildText
+      && this.message.channel.type !== ChannelType.PublicThread) return false;
     if (this.message.type === MessageType.Reply && this.message?.reference?.messageId) {
       const { channel } = this.message;
       const replied = await channel.messages.fetch(this.message.reference.messageId);
@@ -65,7 +67,7 @@ export default class MessageProcessing {
       'Jutro zdobędziesz wszystko co chcesz 🤩',
     ];
     if (this.message.content.match(/dobranoc/i)) {
-      if (dayjs().format('HH:mm') >= '20:00' && dayjs().format('HH:mm') <= '24:00') {
+      if (dayjs().format('HH:mm') >= '19:00' && dayjs().format('HH:mm') <= '24:00') {
         this.message.reply(chooseRandom(replies));
       }
     }
@@ -85,6 +87,17 @@ export default class MessageProcessing {
       if (dayjs().tz().format('HH:mm') >= '04:00' && dayjs().tz().format('HH:mm') <= '09:00') {
         this.message.reply(chooseRandom(replies));
       }
+    }
+  }
+
+  public voting() {
+    const votes = ['👍', '👎'];
+    const message = this.message.content.toLocaleLowerCase();
+    if (this.message.channel.type === ChannelType.DM) return;
+    if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return;
+    if (message.match(/(y|t|tak)\s*(\/|lub)\s*(n|nie)/g) || message.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
+      this.message.react(votes[0]);
+      this.message.react(votes[1]);
     }
   }
 }
