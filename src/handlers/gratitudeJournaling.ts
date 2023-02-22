@@ -11,12 +11,12 @@ export default class GratitudeJournaling {
 
             const name = new TextInputBuilder()
                 .setCustomId('nameInput')
-                .setLabel('Whats your name/nickname?')
+                .setLabel('Twóje imię / Twój nick?')
                 .setStyle(TextInputStyle.Short);
 
             const journal = new TextInputBuilder()
                 .setCustomId('journal')
-                .setLabel('What are you grateful for?')
+                .setLabel('Za co jesteś wdzięczny?')
                 .setStyle(TextInputStyle.Paragraph);
 
             const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(name);

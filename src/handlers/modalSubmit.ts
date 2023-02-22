@@ -10,7 +10,7 @@ export default class ModalSubmit {
         console.log({ nameResponse, journalResponse });
 
         if (interaction.customId === 'gratitudeJournaling') {
-            await interaction.reply({ content: 'Your submission was received successfully!' });
+            await interaction.reply({ content: 'Twój wpis został odebrany pomyślnie!' });
 
             // Actions after (submit data do database or file)
             // todo: decide what to do with those journals.
