@@ -1,12 +1,16 @@
-import { ActivityType, Client, Message, VoiceState } from 'discord.js';
+import { ActivityType, Client, Collection, Interaction, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
-import MessageProcessing from './messages';
+import MessageProcessing from './handlers/messages';
 import { BOT_NAME, clientConfig } from './config';
-import { getChannel, getMember } from './utils';
-import ChatAI from './chat';
-import DeepWork from './deepWork';
-// import ServerStats from './serverStats';
+import ChatAI from './handlers/chat';
+import DeepWork from './handlers/deepWork';
+import ServerStats from './handlers/serverStats';
+import { getChannel } from './utils/channels';
+import getMember from './utils/members';
+import GratitudeJournaling from './handlers/gratitudeJournaling';
+import gratitude from './commands/commands';
+import ModalSubmit from './handlers/modalSubmit';
 
 export default class AdonisBot {
   private selfId = '';
@@ -16,7 +20,7 @@ export default class AdonisBot {
   private message: MessageProcessing = {} as MessageProcessing;
   private chat: ChatAI = {} as ChatAI;
   private deepWork: DeepWork = {} as DeepWork;
-  // private serverStats: ServerStats = {} as ServerStats;
+  private serverStats: ServerStats = {} as ServerStats;
 
   constructor() {
     this.token = process.env.TOKEN!;
@@ -24,6 +28,14 @@ export default class AdonisBot {
     this.client.on('ready', this.onReady.bind(this));
     this.client.on('messageCreate', this.onMessage.bind(this));
     this.client.on('voiceStateUpdate', this.onVoiceStateUpdate.bind(this));
+    this.client.on(
+        'interactionCreate',
+        (interaction: Interaction) => AdonisBot.onInteractionCreate(interaction),
+    );
+    this.client.on(
+        'interactionCreate',
+        (interaction: Interaction) => AdonisBot.onModalSubmit(interaction),
+    );
     this.client.login(this.token);
   }
 
@@ -44,8 +56,13 @@ export default class AdonisBot {
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.client);
-    // this.serverStats = new ServerStats(this.client);
+    this.serverStats = new ServerStats(this.client);
 
+    const commands = new Collection();
+    commands.set(gratitude.data.name, gratitude);
+    this.client?.application?.commands.set([
+        { name: gratitude.data.name, description: gratitude.data.description },
+    ]);
     // eslint-disable-next-line no-console
     console.log('Connected');
   }
@@ -58,7 +75,7 @@ export default class AdonisBot {
   }
 
   private onEvery10Mins() {
-    // this.serverStats.run();
+    this.serverStats.run();
   }
 
   private onMessage(message: Message) {
@@ -68,5 +85,12 @@ export default class AdonisBot {
 
   private onVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {
     this.deepWork.run(oldState, newState);
+  }
+  private static async onInteractionCreate(interaction: Interaction) {
+    GratitudeJournaling.run(interaction);
+  }
+
+  private static async onModalSubmit(interaction: Interaction) {
+    await ModalSubmit.run(interaction);
   }
 }

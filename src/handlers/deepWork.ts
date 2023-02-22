@@ -1,5 +1,5 @@
 import { Client, VoiceState } from 'discord.js';
-import { addRoles, deleteRoles } from './utils';
+import { addRoles, deleteRoles } from '../utils/roles';
 
 export default class DeepWork {
   private client : Client;

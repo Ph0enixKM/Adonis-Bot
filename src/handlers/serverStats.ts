@@ -1,6 +1,7 @@
 import { Client, Guild, GuildChannel, GuildMember } from 'discord.js';
-import { getGuild, getMatchedChannel } from './utils';
-import { ServerStatsEnum } from './enums';
+import ServerStatsEnum from '../enums';
+import getGuild from '../utils/guilds';
+import { getMatchedChannel } from '../utils/channels';
 
 export default class ServerStats {
   private client: Client;
