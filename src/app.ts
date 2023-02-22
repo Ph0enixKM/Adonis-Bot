@@ -6,7 +6,7 @@ import { BOT_NAME, clientConfig } from './config';
 import { getChannel, getMember } from './utils';
 import ChatAI from './chat';
 import DeepWork from './deepWork';
-import ServerStats from './serverStats';
+// import ServerStats from './serverStats';
 
 export default class AdonisBot {
   private selfId = '';
@@ -16,7 +16,7 @@ export default class AdonisBot {
   private message: MessageProcessing = {} as MessageProcessing;
   private chat: ChatAI = {} as ChatAI;
   private deepWork: DeepWork = {} as DeepWork;
-  private serverStats: ServerStats = {} as ServerStats;
+  // private serverStats: ServerStats = {} as ServerStats;
 
   constructor() {
     this.token = process.env.TOKEN!;
@@ -44,7 +44,7 @@ export default class AdonisBot {
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.client);
-    this.serverStats = new ServerStats(this.client);
+    // this.serverStats = new ServerStats(this.client);
 
     // eslint-disable-next-line no-console
     console.log('Connected');
@@ -58,7 +58,7 @@ export default class AdonisBot {
   }
 
   private onEvery10Mins() {
-    this.serverStats.run();
+    // this.serverStats.run();
   }
 
   private onMessage(message: Message) {
