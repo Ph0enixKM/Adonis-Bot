@@ -1,5 +1,5 @@
 import { Client, GuildMember, Role } from 'discord.js';
-import { getGuild } from './guilds';
+import getGuild from './guilds';
 
 export const getRole = (client : Client, roleName : string) : any => (
     getGuild(client, 'Self Improvement Poland').roles.cache.find((role : Role) => role.name === roleName)

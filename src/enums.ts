@@ -1,4 +1,4 @@
-export enum ServerStatsEnum {
+enum ServerStatsEnum {
   ONLINE = '🟢 Online:',
   TOTAL_MEMBERS = '🦍 Total members:',
   STAFF = '🫅 Online staff:',
@@ -8,3 +8,4 @@ export enum ServerStatsEnum {
   ACOLYTE = 'Acolyte:',
   INITIATE = 'Initiate:',
 }
+export default ServerStatsEnum;

@@ -1,4 +1,4 @@
-import { ActivityType, Client, Collection, Events, Interaction, Message, VoiceState } from 'discord.js';
+import { ActivityType, Client, Collection, Interaction, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './handlers/messages';
@@ -7,9 +7,9 @@ import ChatAI from './handlers/chat';
 import DeepWork from './handlers/deepWork';
 import ServerStats from './handlers/serverStats';
 import { getChannel } from './utils/channels';
-import { getMember } from './utils/members';
+import getMember from './utils/members';
 import GratitudeJournaling from './handlers/gratitudeJournaling';
-import { gratitude } from './commands/commands';
+import gratitude from './commands/commands';
 import ModalSubmit from './handlers/modalSubmit';
 
 export default class AdonisBot {
@@ -28,8 +28,14 @@ export default class AdonisBot {
     this.client.on('ready', this.onReady.bind(this));
     this.client.on('messageCreate', this.onMessage.bind(this));
     this.client.on('voiceStateUpdate', this.onVoiceStateUpdate.bind(this));
-    this.client.on('interactionCreate', (interaction: Interaction) => AdonisBot.onInteractionCreate(interaction));
-    this.client.on(Events.InteractionCreate, (interaction: Interaction) => AdonisBot.onModalSubmit(interaction));
+    this.client.on(
+        'interactionCreate',
+        (interaction: Interaction) => AdonisBot.onInteractionCreate(interaction),
+    );
+    this.client.on(
+        'interactionCreate',
+        (interaction: Interaction) => AdonisBot.onModalSubmit(interaction),
+    );
     this.client.login(this.token);
   }
 
