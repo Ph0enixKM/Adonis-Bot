@@ -1,4 +1,5 @@
 import { Client, Guild, GuildMember, Role } from 'discord.js';
+import { SERVER_NAME } from './config';
 
 export const getChannel = (client : Client, channelName : string) : any => (
   client.channels.cache.find((channel : any) => channel.name === channelName)
@@ -14,7 +15,7 @@ export const getMatchedChannel = (client : Client, channelName : string) : any =
 };
 
 export const getRole = (client : Client, roleName : string) : any => (
-  getGuild(client, 'Self Improvement Poland').roles.cache.find((role : Role) => role.name === roleName)
+  getGuild(client, SERVER_NAME).roles.cache.find((role : Role) => role.name === roleName)
 );
 
 export const deleteRoles = (client : Client, member : GuildMember, roles : string[]) : void => {
@@ -30,9 +31,9 @@ export const addRoles = (client : Client, member : GuildMember, roles : string[]
 };
 
 export const getMember = (client : Client, memberName : string) : any => (
-  getGuild(client, 'Self Improvement Poland').members.cache.find((member : GuildMember) => member.user.username === memberName)
+  getGuild(client, SERVER_NAME).members.cache.find((member : GuildMember) => member.user.username === memberName)
 );
 
-export const chooseRandom = (array : any[]) : any => array[
-      Math.floor(Math.random() * array.length)
-    ];
+export const chooseRandom = (array : any[]) : any => (
+  array[Math.floor(Math.random() * array.length)]
+);

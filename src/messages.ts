@@ -91,9 +91,18 @@ export default class MessageProcessing {
   }
 
   public voting() {
-    const votes = ['👍', '👎'];
+    const votes = ['👍', '👎', '👆'];
     const message = this.message.content.toLocaleLowerCase();
     if (this.message.channel.type === ChannelType.DM) return;
+    if (message.match(/\$[yt]\/?n/g)) {
+      this.message.react(votes[0]);
+      this.message.react(votes[1]);
+      return;
+    }
+    if (message.match(/\$vote/g)) {
+      this.message.react(votes[2]);
+      return;
+    }
     if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return;
     if (message.match(/(y|t|tak)\s*(\/|lub)\s*(n|nie)/g) || message.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
       this.message.react(votes[0]);
