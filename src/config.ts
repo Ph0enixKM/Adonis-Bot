@@ -23,4 +23,3 @@ export const clientConfig = () => ({
 });
 
 export const BOT_NAME = 'Adonis Bot';
-export const SERVER_NAME = process.env.SERVER_NAME || 'Adonis Bot';

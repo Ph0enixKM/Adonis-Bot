@@ -1,4 +1,4 @@
-import { ActivityType, Client, Message, VoiceState, Interaction } from 'discord.js';
+import { ActivityType, Client, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './messages';
@@ -11,6 +11,7 @@ import DeepWork from './deepWork';
 export default class AdonisBot {
   private selfId = '';
   private token: string;
+
   private client: Client;
   private message: MessageProcessing = {} as MessageProcessing;
   private chat: ChatAI = {} as ChatAI;
@@ -23,7 +24,6 @@ export default class AdonisBot {
     this.client.on('ready', this.onReady.bind(this));
     this.client.on('messageCreate', this.onMessage.bind(this));
     this.client.on('voiceStateUpdate', this.onVoiceStateUpdate.bind(this));
-    this.client.on('interactionCreate', this.onInteractionCreate.bind(this));
     this.client.login(this.token);
   }
 
@@ -40,10 +40,12 @@ export default class AdonisBot {
     cron.schedule('* * * * *', this.onEveryMinute.bind(this));
     cron.schedule('*/10 * * * *', this.onEvery10Mins.bind(this));
     this.selfId = getMember(this.client, BOT_NAME).id;
+
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.client);
     // this.serverStats = new ServerStats(this.client);
+
     // eslint-disable-next-line no-console
     console.log('Connected');
   }
@@ -53,13 +55,6 @@ export default class AdonisBot {
       const channel = getChannel(this.client, '💬gigachat');
       channel.send('Pamiętajcie bracia o 9h snu!');
     }
-  }
-
-  private onInteractionCreate(intent: Interaction) {
-    console.log(intent);
-    // this.client.guilds.cache.forEach((guild) => {
-    //   guild.commands.set(this.commands);
-    // });
   }
 
   private onEvery10Mins() {
