@@ -11,13 +11,15 @@ export default class MessageProcessing {
   }
 
   public async run(message: Message) {
+    const msgLower = this.message.content.toLocaleLowerCase();
     this.message = message;
     if (await this.isValid()) {
       this.reactAdonis();
       this.goodMorning();
       this.goodNight();
     }
-    this.voting();
+    this.voting(msgLower);
+    this.votingKeywords(msgLower);
   }
 
   public async isValid(): Promise<boolean> {
@@ -90,23 +92,26 @@ export default class MessageProcessing {
     }
   }
 
-  public voting() {
-    const votes = ['👍', '👎', '👆'];
-    const message = this.message.content.toLocaleLowerCase();
+  private votingKeywords(msgLower: string) {
+    switch (true) {
+      case msgLower.match(/\$[yt]\/?n/g) !== null:
+        this.message.react('👍');
+        this.message.react('👎');
+        break;
+      case msgLower.match(/\$vote/g) !== null:
+        this.message.react('👆');
+        break;
+      default:
+        break;
+    }
+  }
+
+  public voting(msgLower: string) {
     if (this.message.channel.type === ChannelType.DM) return;
-    if (message.match(/\$[yt]\/?n/g)) {
-      this.message.react(votes[0]);
-      this.message.react(votes[1]);
-      return;
-    }
-    if (message.match(/\$vote/g)) {
-      this.message.react(votes[2]);
-      return;
-    }
     if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return;
-    if (message.match(/(y|t|tak)\s*(\/|lub)\s*(n|nie)/g) || message.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
-      this.message.react(votes[0]);
-      this.message.react(votes[1]);
+    if (msgLower.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
+      this.message.react('👍');
+      this.message.react('👎');
     }
   }
 }
