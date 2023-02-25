@@ -23,7 +23,6 @@ export default class AdonisBot {
     this.client.on('ready', this.onReady.bind(this));
     this.client.on('messageCreate', this.onMessage.bind(this));
     this.client.on('voiceStateUpdate', this.onVoiceStateUpdate.bind(this));
-    this.client.on('interactionCreate', this.onInteractionCreate.bind(this));
     this.client.login(this.token);
   }
 
@@ -53,13 +52,6 @@ export default class AdonisBot {
       const channel = getChannel(this.client, '💬gigachat');
       channel.send('Pamiętajcie bracia o 9h snu!');
     }
-  }
-
-  private onInteractionCreate(intent: Interaction) {
-    console.log(intent);
-    // this.client.guilds.cache.forEach((guild) => {
-    //   guild.commands.set(this.commands);
-    // });
   }
 
   private onEvery10Mins() {
