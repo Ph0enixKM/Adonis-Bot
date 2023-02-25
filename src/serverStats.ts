@@ -1,6 +1,7 @@
 import { Client, Guild, GuildChannel, GuildMember } from 'discord.js';
 import { getGuild, getMatchedChannel } from './utils';
 import { ServerStatsEnum } from './enums';
+import { SERVER_NAME } from './config';
 
 export default class ServerStats {
   private client: Client;
@@ -10,7 +11,7 @@ export default class ServerStats {
 
   constructor(client: Client) {
     this.client = client;
-    this.guild = getGuild(this.client, 'Self Improvement Poland');
+    this.guild = getGuild(this.client, SERVER_NAME);
   }
 
   public run() {
