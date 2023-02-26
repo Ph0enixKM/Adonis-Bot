@@ -1,4 +1,4 @@
-import { ActivityType, Client, Message, VoiceState, Interaction } from 'discord.js';
+import { ActivityType, Client, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './messages';

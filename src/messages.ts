@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
-import { ChannelType, Message, MessageType } from 'discord.js';
+import { Message, MessageType } from 'discord.js';
 import { chooseRandom } from './utils';
 
 export default class MessageProcessing {
   private message: Message = {} as Message;
+  private messageFormatted: string = '';
   private selfId: string;
 
   constructor(selfId: string) {
@@ -11,31 +12,40 @@ export default class MessageProcessing {
   }
 
   public async run(message: Message) {
+    this.formatMessage(message.content);
     this.message = message;
     if (await this.isValid()) {
       this.reactAdonis();
+      this.reactBalla();
       this.goodMorning();
       this.goodNight();
     }
     this.voting();
+    this.votingKeywords();
+  }
+
+  private formatMessage(message: string) {
+    this.messageFormatted = message.replace(/:[^:]+:/g, '').toLocaleLowerCase();
+  }
+
+  public replyThanks(reply: Message): boolean {
+    if (!this.message.author.bot && reply.author.bot) {
+      if (this.message.content.match(/^\s*dzi(ęki|ękuję|ena|ękuwa)\s*$/gi)) {
+        const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝'];
+        this.message.react(chooseRandom(reactions));
+        return true;
+      }
+    }
+    return false;
   }
 
   public async isValid(): Promise<boolean> {
     if (this.message.author.bot) return false;
-    if (this.message.channel.type !== ChannelType.GuildText
-      && this.message.channel.type !== ChannelType.PublicThread) return false;
+    if (this.message.channel.isVoiceBased()) return false;
     if (this.message.type === MessageType.Reply && this.message?.reference?.messageId) {
-      const { channel } = this.message;
-      const replied = await channel.messages.fetch(this.message.reference.messageId);
-      if (!this.message.author.bot && replied.author.bot) {
-        // Special reply
-        if (this.message.content.match(/^\s*dzi(ęki|ękuję|ena)\s*(wielkie|bardzo)?\s*$/i)) {
-          const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝'];
-          this.message.react(chooseRandom(reactions));
-          return false;
-        }
-      }
-      if (replied.content.match(`<@${this.selfId}>`)) return true;
+      const reply = await this.message.channel.messages.fetch(this.message.reference.messageId);
+      if (this.replyThanks(reply)) return false;
+      if (reply.content.match(`<@${this.selfId}>`)) return true;
       return false;
     }
     if (this.message.content.match(`<@${this.selfId}>`)) return true;
@@ -51,8 +61,14 @@ export default class MessageProcessing {
   public reactAdonis() {
     const words = ['adonis', 'chad'];
     const chad = this.getEmojiByName('chad');
-    if (words.find((word) => this.message.content.replace(/:[^:]+:/, '').match(word))) {
-      if (chad) this.message.react(chad);
+    if (words.find((word) => this.messageFormatted.match(word))) {
+      this.message.react(chad ?? '🦾');
+    }
+  }
+
+  public reactBalla() {
+    if (this.messageFormatted.match('balla')) {
+      this.message.react('🤙');
     }
   }
 
@@ -90,23 +106,30 @@ export default class MessageProcessing {
     }
   }
 
-  public voting() {
-    const votes = ['👍', '👎', '👆'];
-    const message = this.message.content.toLocaleLowerCase();
-    if (this.message.channel.type === ChannelType.DM) return;
-    if (message.match(/\$[yt]\/?n/g)) {
-      this.message.react(votes[0]);
-      this.message.react(votes[1]);
-      return;
+  private votingKeywords() {
+    switch (true) {
+      case this.messageFormatted.match(/\$[yt]\/?n/g) !== null:
+        this.message.react('👍');
+        this.message.react('👎');
+        break;
+      case this.messageFormatted.match(/\$vote/g) !== null:
+        this.message.react('👆');
+        break;
+      default:
+        break;
     }
-    if (message.match(/\$vote/g)) {
-      this.message.react(votes[2]);
-      return;
-    }
+  }
+
+  private votingGuard() {
+    if (this.message.channel.isDMBased()) return;
     if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return;
-    if (message.match(/(y|t|tak)\s*(\/|lub)\s*(n|nie)/g) || message.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
-      this.message.react(votes[0]);
-      this.message.react(votes[1]);
+  }
+
+  public voting() {
+    this.votingGuard();
+    if (this.messageFormatted.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
+      this.message.react('👍');
+      this.message.react('👎');
     }
   }
 }
