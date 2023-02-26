@@ -17,8 +17,11 @@ module.exports = {
      * either do that or wrap the main code in index.ts with anonymous function
      * (() => new AdonisBot());
      */
-    'no-new': 0, //
+    'no-new': 0,
     '@typescript-eslint/lines-between-class-members': 0,
+    'import/prefer-default-export': 0,
+    'max-len': ['error', { code: 140 }],
+    'class-methods-use-this': 0,
   },
   root: true,
 };

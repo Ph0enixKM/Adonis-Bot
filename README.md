@@ -18,9 +18,9 @@ OPEN_AI="your-open-ai-token"
 ## Eslint
 To run Eslint
 ```
-npx eslint src/ --ext .ts
+npm run lint
 ```
 To fix all issues 
 ```
-npx eslint src/ --ext .ts --fix
+npm run lint:fix
 ```

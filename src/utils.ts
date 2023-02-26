@@ -1,5 +1,7 @@
 import { Client, GuildMember } from 'discord.js';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const getChannel = (client: Client, channelName: string): any => (
   client.channels.cache.find((channel: any) => channel.name === channelName)
 );
@@ -34,3 +36,5 @@ export const getMember = (client: Client, memberName: string): any => (
 );
 
 export const chooseRandom = (array: any[]): any => array[Math.floor(Math.random() * array.length)];
+
+/* eslint-enable @typescript-eslint/no-explicit-any */

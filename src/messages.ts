@@ -46,7 +46,8 @@ export default class MessageProcessing {
   }
 
   public getEmojiByName(name: string) {
-    const emoji = this.message.guild!.emojis.cache.find((guildEmoji) => name === guildEmoji.name);
+    if (!this.message.guild) return null;
+    const emoji = this.message.guild.emojis.cache.find((guildEmoji) => name === guildEmoji.name);
     return emoji ? `<:${name}:${emoji.id}>` : null;
   }
 
