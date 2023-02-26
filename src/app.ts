@@ -1,4 +1,4 @@
-import { ActivityType, Client, Message, VoiceState, Interaction } from 'discord.js';
+import { ActivityType, Client, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './messages';
@@ -18,6 +18,7 @@ export default class AdonisBot {
   // private serverStats: ServerStats = {} as ServerStats;
 
   constructor() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.token = process.env.TOKEN!;
     this.client = new Client(clientConfig());
     this.client.on('ready', this.onReady.bind(this));
@@ -28,15 +29,13 @@ export default class AdonisBot {
   }
 
   private onReady() {
-    this.client.user!.setPresence({
-      activities: [
-        {
-          name: 'meditation',
-          type: ActivityType.Competing,
-        },
-      ],
-    });
-    this.client.user!.setStatus('online');
+    if (!this.client.user) {
+      // eslint-disable-next-line no-console
+      console.log('Could not connect to discord');
+      return;
+    }
+    this.client.user.setPresence({ activities: [{ name: 'meditation', type: ActivityType.Competing }] });
+    this.client.user.setStatus('online');
     cron.schedule('* * * * *', this.onEveryMinute.bind(this));
     cron.schedule('*/10 * * * *', this.onEvery10Mins.bind(this));
     this.selfId = getMember(this.client, BOT_NAME).id;
@@ -55,8 +54,8 @@ export default class AdonisBot {
     }
   }
 
-  private onInteractionCreate(intent: Interaction) {
-    console.log(intent);
+  private onInteractionCreate() {
+    // TODO: We will use this for slash commands
     // this.client.guilds.cache.forEach((guild) => {
     //   guild.commands.set(this.commands);
     // });

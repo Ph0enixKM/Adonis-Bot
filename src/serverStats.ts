@@ -27,25 +27,19 @@ export default class ServerStats {
 
   private getOnlineMembers(): void {
     const channel = getMatchedChannel(this.client, 'Online:');
-
-    const membersCount = this.guild.members.cache.filter(
-        (member: GuildMember) => this.isMemberOnline(member)
-      && ServerStats.isNotABot(member),
-    ).size;
-
-    ServerStats.setChannelName(channel, ServerStatsEnum.ONLINE, membersCount);
+    const members = this.guild.members.cache.filter((member: GuildMember) => (
+      this.isMemberOnline(member) && ServerStats.isNotABot(member)
+    ));
+    ServerStats.setChannelName(channel, ServerStatsEnum.ONLINE, members.size);
   }
 
   private getStaffMembers(): void {
     const channel = getMatchedChannel(this.client, 'Online staff:');
-
-    const staff = this.guild.members.cache.filter(
-        (member: GuildMember) => ServerStats.hasMemberRole(member, this.staffRoles),
-    );
-    const staffCount = staff.filter((member: GuildMember) => this.isMemberOnline(member)
-      && ServerStats.isNotABot(member)).size;
-
-    ServerStats.setChannelName(channel, ServerStatsEnum.STAFF, staffCount);
+    const members = this.guild.members.cache.filter((member: GuildMember) => ServerStats.hasMemberRole(member, this.staffRoles));
+    const staff = members.filter((member: GuildMember) => (
+      this.isMemberOnline(member) && ServerStats.isNotABot(member)
+    ));
+    ServerStats.setChannelName(channel, ServerStatsEnum.STAFF, staff.size);
   }
 
   private getAllMembers(): void {
@@ -55,13 +49,11 @@ export default class ServerStats {
 
   private getMembersInDeepWork(): void {
     const channel = getMatchedChannel(this.client, 'Deep work:');
-
     const membersInDeepWork = this.guild.members.cache.filter(
       (member: GuildMember) => this.isMemberOnline(member)
-        && ServerStats.isNotABot(member)
-        && ServerStats.hasMemberRole(member, ['Deep Work']),
+          && ServerStats.isNotABot(member)
+          && ServerStats.hasMemberRole(member, ['Deep Work']),
     ).size;
-
     ServerStats.setChannelName(channel, ServerStatsEnum.DEEP_WORK, membersInDeepWork);
   }
 
@@ -87,11 +79,10 @@ export default class ServerStats {
       channelNameWithCounts: ServerStatsEnum,
   ) {
     const channel = getMatchedChannel(this.client, channelName);
-    const count = this.guild.members.cache.filter(
-        (member: GuildMember) => ServerStats.isNotABot(member)
-      && ServerStats.hasMemberRole(member, [roleName]),
-    ).size;
-    ServerStats.setChannelName(channel, channelNameWithCounts, count);
+    const roleMembers = this.guild.members.cache.filter((member: GuildMember) => (
+      ServerStats.isNotABot(member) && ServerStats.hasMemberRole(member, [roleName])
+    ));
+    ServerStats.setChannelName(channel, channelNameWithCounts, roleMembers.size);
   }
 
   private isMemberOnline(member: GuildMember) {

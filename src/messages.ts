@@ -4,7 +4,7 @@ import { chooseRandom } from './utils';
 
 export default class MessageProcessing {
   private message: Message = {} as Message;
-  private messageFormatted: string = '';
+  private messageFormatted = '';
   private selfId: string;
 
   constructor(selfId: string) {
@@ -52,7 +52,8 @@ export default class MessageProcessing {
   }
 
   public getEmojiByName(name: string) {
-    const emoji = this.message.guild!.emojis.cache.find((guildEmoji) => name === guildEmoji.name);
+    if (!this.message.guild) return null;
+    const emoji = this.message.guild.emojis.cache.find((guildEmoji) => name === guildEmoji.name);
     return emoji ? `<:${name}:${emoji.id}>` : null;
   }
 
@@ -118,13 +119,14 @@ export default class MessageProcessing {
     }
   }
 
-  private votingGuard() {
-    if (this.message.channel.isDMBased()) return;
-    if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return;
+  private votingGuard(): boolean {
+    if (this.message.channel.isDMBased()) return true;
+    if (!this.message.channel.name.toLocaleLowerCase().match('propozycje')) return true;
+    return false;
   }
 
   public voting() {
-    this.votingGuard();
+    if (this.votingGuard()) return;
     const wordInInfinitive = /^\s*\S{1,10}(a|e|i)[śź]?ć/g;
     if (!this.messageFormatted.match(wordInInfinitive)) return;
     this.message.react('👍');
