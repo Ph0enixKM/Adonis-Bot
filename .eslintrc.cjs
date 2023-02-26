@@ -22,6 +22,9 @@ module.exports = {
     'import/prefer-default-export': 0,
     'max-len': ['error', { code: 140 }],
     'class-methods-use-this': 0,
+    "@typescript-eslint/indent": 0,
+    "object-curly-newline": 0,
+
   },
   root: true,
 };

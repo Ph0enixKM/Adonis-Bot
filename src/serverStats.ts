@@ -1,20 +1,17 @@
-import {
-  CategoryChannel, Client, Guild, GuildMember,
-} from 'discord.js';
+import { Client, Guild, GuildChannel, GuildMember } from 'discord.js';
 import { getGuild, getMatchedChannel } from './utils';
 import { ServerStatsEnum } from './enums';
+import { SERVER_NAME } from './config';
 
 export default class ServerStats {
-  private selfId: string;
   private client: Client;
   private guild: Guild;
   private onlineStatuses = ['online', 'idle', 'dnd'];
   private staffRoles = ['CULT MODERATOR', 'CULT ADMIN'];
 
-  constructor(selfId: string, client: Client) {
-    this.selfId = selfId;
+  constructor(client: Client) {
     this.client = client;
-    this.guild = getGuild(this.client, 'Self Improvement Poland');
+    this.guild = getGuild(this.client, SERVER_NAME);
   }
 
   public run() {
@@ -27,37 +24,37 @@ export default class ServerStats {
     this.getAcolyte();
     this.getInitiate();
   }
+
   private getOnlineMembers(): void {
     const channel = getMatchedChannel(this.client, 'Online:');
     const members = this.guild.members.cache.filter((member: GuildMember) => (
-      this.isMemberOnline(member) && this.isNotABot(member)
+      this.isMemberOnline(member) && ServerStats.isNotABot(member)
     ));
-    this.setChannelName(channel, ServerStatsEnum.ONLINE, members.size);
+    ServerStats.setChannelName(channel, ServerStatsEnum.ONLINE, members.size);
   }
 
   private getStaffMembers(): void {
     const channel = getMatchedChannel(this.client, 'Online staff:');
-    const members = this.guild.members.cache.filter((member: GuildMember) => this.hasMemberRole(member, this.staffRoles));
+    const members = this.guild.members.cache.filter((member: GuildMember) => ServerStats.hasMemberRole(member, this.staffRoles));
     const staff = members.filter((member: GuildMember) => (
-      this.isMemberOnline(member) && this.isNotABot(member)
+      this.isMemberOnline(member) && ServerStats.isNotABot(member)
     ));
-    this.setChannelName(channel, ServerStatsEnum.STAFF, staff.size);
+    ServerStats.setChannelName(channel, ServerStatsEnum.STAFF, staff.size);
   }
 
   private getAllMembers(): void {
     const channel = getMatchedChannel(this.client, 'Total members:');
-    this.setChannelName(channel, ServerStatsEnum.TOTAL_MEMBERS, this.guild.memberCount);
+    ServerStats.setChannelName(channel, ServerStatsEnum.TOTAL_MEMBERS, this.guild.memberCount);
   }
 
   private getMembersInDeepWork(): void {
     const channel = getMatchedChannel(this.client, 'Deep work:');
     const membersInDeepWork = this.guild.members.cache.filter(
       (member: GuildMember) => this.isMemberOnline(member)
-          && this.isNotABot(member)
-          && this.hasMemberRole(member, ['Deep Work']),
+          && ServerStats.isNotABot(member)
+          && ServerStats.hasMemberRole(member, ['Deep Work']),
     ).size;
-
-    this.setChannelName(channel, ServerStatsEnum.DEEP_WORK, membersInDeepWork);
+    ServerStats.setChannelName(channel, ServerStatsEnum.DEEP_WORK, membersInDeepWork);
   }
 
   private getAdonises(): void {
@@ -76,26 +73,35 @@ export default class ServerStats {
     this.getMembersByRank('Initiate:', 'CULT INITIATE', ServerStatsEnum.INITIATE);
   }
 
-  private getMembersByRank(channelName: string, roleName: string, channelNameWithCounts: ServerStatsEnum) {
+  private getMembersByRank(
+      channelName: string,
+      roleName: string,
+      channelNameWithCounts: ServerStatsEnum,
+  ) {
     const channel = getMatchedChannel(this.client, channelName);
-    const count = this.guild.members.cache.filter((member: GuildMember) => this.isNotABot(member)
-        && this.hasMemberRole(member, [roleName])).size;
-    this.setChannelName(channel, channelNameWithCounts, count);
+    const roleMembers = this.guild.members.cache.filter((member: GuildMember) => (
+      ServerStats.isNotABot(member) && ServerStats.hasMemberRole(member, [roleName])
+    ));
+    ServerStats.setChannelName(channel, channelNameWithCounts, roleMembers.size);
   }
 
   private isMemberOnline(member: GuildMember) {
     return member?.presence && (this.onlineStatuses.includes(member.presence.status));
   }
 
-  private isNotABot(member: GuildMember) {
+  static isNotABot(member: GuildMember) {
     return !member.user.bot;
   }
 
-  private hasMemberRole(member: GuildMember, roleName: string[]) {
+  static hasMemberRole(member: GuildMember, roleName: string[]) {
     return member.roles.cache.some((role) => roleName.includes(role.name));
   }
 
-  private setChannelName(channel: CategoryChannel, channelName: ServerStatsEnum, count: number) : void {
-    channel.setName(`${channelName} ${count}`);
+  // Cloning channel with new name to bypass discord api channel name change rate
+  static setChannelName(channel: GuildChannel, channelName: ServerStatsEnum, count: number): void {
+    channel.clone({
+      name: `${channelName} ${count}`,
+    });
+    channel.delete();
   }
 }
