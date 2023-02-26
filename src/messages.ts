@@ -29,14 +29,12 @@ export default class MessageProcessing {
   }
 
   public replyThanks(reply: Message): boolean {
-    if (!this.message.author.bot && reply.author.bot) {
-      if (this.message.content.match(/^\s*dzi(ęki|ękuję|ena|ękuwa)\s*$/gi)) {
-        const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝'];
-        this.message.react(chooseRandom(reactions));
-        return true;
-      }
-    }
-    return false;
+    const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝'];
+    const thanksRegex = /^\s*dzi(ęki|ękuję|ena|ękuwa)\s*$/gi;
+    if (this.message.author.bot || !reply.author.bot) return false;
+    if (!this.message.content.match(thanksRegex)) return false;
+    this.message.react(chooseRandom(reactions));
+    return true;
   }
 
   public async isValid(): Promise<boolean> {
@@ -127,9 +125,9 @@ export default class MessageProcessing {
 
   public voting() {
     this.votingGuard();
-    if (this.messageFormatted.match(/^\s*\S{1,10}(a|e|i)[śź]?ć/g)) {
-      this.message.react('👍');
-      this.message.react('👎');
-    }
+    const wordInInfinitive = /^\s*\S{1,10}(a|e|i)[śź]?ć/g;
+    if (!this.messageFormatted.match(wordInInfinitive)) return;
+    this.message.react('👍');
+    this.message.react('👎');
   }
 }
