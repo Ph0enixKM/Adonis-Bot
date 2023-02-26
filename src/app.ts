@@ -1,4 +1,4 @@
-import { ActivityType, Client, Message, VoiceState, Interaction } from 'discord.js';
+import { ActivityType, Client, Message, VoiceState } from 'discord.js';
 import cron from 'node-cron';
 import dayjs from 'dayjs';
 import MessageProcessing from './messages';
@@ -54,7 +54,7 @@ export default class AdonisBot {
     }
   }
 
-  private onInteractionCreate(_intent: Interaction) {
+  private onInteractionCreate() {
     // TODO: We will use this for slash commands
     // this.client.guilds.cache.forEach((guild) => {
     //   guild.commands.set(this.commands);
