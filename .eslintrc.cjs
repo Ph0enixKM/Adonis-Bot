@@ -24,7 +24,8 @@ module.exports = {
     'class-methods-use-this': 0,
     "@typescript-eslint/indent": 0,
     "object-curly-newline": 0,
-
+    "no-restricted-syntax": 0,
+    "@typescript-eslint/no-shadow": 0,
   },
   root: true,
 };
