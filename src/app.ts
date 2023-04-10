@@ -66,14 +66,12 @@ export default class AdonisBot {
   }
 
   private onEvery10Mins() {
-    // Bedtime.checkBedtime(this.client);
+    Bedtime.checkBedtime(this.client);
   }
 
   private onMessage(message: Message) {
     this.message.run(message);
     this.chat.run(message);
-    if (message.author.id === this.selfId) return;
-    Bedtime.checkBedtime(this.client);
   }
 
   private onVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {
