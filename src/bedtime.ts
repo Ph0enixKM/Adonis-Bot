@@ -128,10 +128,9 @@ export default class Bedtime {
         .set('minute', parseInt(bedtimeTime[1], 10))
         .set('second', 0);
       // If we are within 1 hour after bedtime
-      const nowShifted = dayjs().tz().add(1, 'hour');
       const isLate = bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz());
-      const isLateShifted = bedtime.add(1, 'hour').isBefore(nowShifted) && bedtime.add(2, 'hour').isAfter(nowShifted);
-      if (!(isLate || isLateShifted)) return false;
+      const isLateMidnight = bedtimeTime[0] == '23' && dayjs().tz().format('HH') == '00';
+      if (!(isLate || isLateMidnight)) return false;
       // If member is online or in voice channel
       if (!(member?.presence.status === 'online' || member?.voice.channel)) return false;
       // If user has skipped bedtime

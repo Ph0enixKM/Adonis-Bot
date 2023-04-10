@@ -72,6 +72,8 @@ export default class AdonisBot {
   private onMessage(message: Message) {
     this.message.run(message);
     this.chat.run(message);
+    if (message.author.bot) return;
+    Bedtime.checkBedtime(this.client);
   }
 
   private onVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {
