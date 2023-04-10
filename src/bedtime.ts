@@ -59,7 +59,14 @@ export default class Bedtime {
       });
       await interaction.reply(`Ustawiono bedtime na godzinę ${time} ⏰`);
     } else {
-      const bedtimeSkipMessage = dbUser.bedtimeSkip
+      if (dbUser.bedtime === null) {
+        await interaction.reply({
+          content: 'Nie masz ustawionego bedtime. Ustaw go używając `/bedtime set HH:mm`',
+          ephemeral: true,
+        });
+        return;
+      }
+      const bedtimeSkipMessage = dbUser.bedtimeSkip === dayjs().format('YYYY-MM-DD')
         ? 'dzisiaj **nie będę Cię zaganiać** do łóżka :coffee:'
         : 'dzisiaj Cię zagonię do łóżka 🛌';
       await interaction.reply({
