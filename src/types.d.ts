@@ -2,7 +2,7 @@
 // Declare module for cargodb
 declare module 'cargodb' {
   export default class CargoDB {
-    constructor(path: string);
+    constructor(path: string, dbPath?: string);
     get(key: string): Promise<any>;
     set(key: string, value: any): Promise<void>;
     in(name: string): CargoDBCollection;
