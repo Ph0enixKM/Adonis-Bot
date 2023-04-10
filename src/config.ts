@@ -33,9 +33,7 @@ export const cargo = new CargoDB('db');
 cargo.create('users');
 export type User = {
   ID: string;
-  discord_id: string;
+  discordId: string;
   bedtime: string;
-  bedtime_skip: string;
+  bedtimeSkip: string;
 };
-
-

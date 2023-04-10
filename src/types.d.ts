@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Declare module for cargodb
 declare module 'cargodb' {
   export default class CargoDB {

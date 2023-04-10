@@ -1,5 +1,5 @@
-import { Interaction, ApplicationCommandOptionType, Client } from "discord.js";
-import Bedtime from "./bedtime";
+import { Interaction, ApplicationCommandOptionType, Client } from 'discord.js';
+import Bedtime from './bedtime';
 
 const COMMANDS = [
   {
@@ -36,8 +36,8 @@ const COMMANDS = [
     execute: async (interaction: Interaction, client: Client) => {
       if (!interaction.isCommand()) return;
       Bedtime.run(interaction, client);
-    }
-  }
+    },
+  },
 ];
 
 export default COMMANDS;
