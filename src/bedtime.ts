@@ -123,12 +123,15 @@ export default class Bedtime {
       const member = members.get(user.discordId);
       if (!member && !user.bedtime) return false;
       const bedtimeTime = user.bedtime?.split(':');
-      const bedtime = dayjs()
+      const bedtime = dayjs().tz()
         .set('hour', parseInt(bedtimeTime[0], 10))
         .set('minute', parseInt(bedtimeTime[1], 10))
         .set('second', 0);
       // If we are within 1 hour after bedtime
-      if (!(bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz()))) return false;
+      const nowShifted = dayjs().tz().add(1, 'hour');
+      const isLate = bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz());
+      const isLateShifted = bedtime.add(1, 'hour').isBefore(nowShifted) && bedtime.add(2, 'hour').isAfter(nowShifted);
+      if (!(isLate || isLateShifted)) return false;
       // If member is online or in voice channel
       if (!(member?.presence.status === 'online' || member?.voice.channel)) return false;
       // If user has skipped bedtime
