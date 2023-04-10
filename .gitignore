@@ -32,3 +32,6 @@ typings/
 
 # build output
 dist
+
+# database
+db/

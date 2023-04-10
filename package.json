@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Ph0enixKM/Adonis-Bot#readme",
   "dependencies": {
+    "cargodb": "^3.0.3",
     "dayjs": "^1.11.7",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
