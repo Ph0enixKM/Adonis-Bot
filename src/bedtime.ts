@@ -128,11 +128,11 @@ export default class Bedtime {
         .set('minute', parseInt(bedtimeTime[1], 10))
         .set('second', 0);
       // If we are within 1 hour after bedtime
-      if (!(bedtime.isBefore(dayjs()) && bedtime.add(1, 'hour').isAfter(dayjs()))) return false;
+      if (!(bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz()))) return false;
       // If member is online or in voice channel
       if (!(member?.presence.status === 'online' || member?.voice.channel)) return false;
       // If user has skipped bedtime
-      if (user.bedtimeSkip === dayjs().format('YYYY-MM-DD')) return false;
+      if (user.bedtimeSkip === dayjs().tz().format('YYYY-MM-DD')) return false;
       return false;
     });
     if (!sleepyUsers.length) return;
