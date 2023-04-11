@@ -35,7 +35,7 @@ const COMMANDS = [
     ],
     execute: async (interaction: Interaction, client: Client) => {
       if (!interaction.isCommand()) return;
-      Bedtime.run(interaction, client);
+      await Bedtime.run(interaction, client);
     },
   },
 ];

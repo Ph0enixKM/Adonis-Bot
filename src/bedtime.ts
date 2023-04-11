@@ -34,7 +34,8 @@ export default class Bedtime {
 
   private static async setTime(interaction: CommandInteraction, dbUser: User) {
     const timeValue = interaction.options.get('set')?.value?.toString() ?? '';
-    const time = (timeValue.match(/\d:\d\d/) ? `0${timeValue}` : timeValue).trim();
+    // Parse single digit hours to double digit
+    const time = (timeValue.match(/^\s*\d:\d\d/) ? `0${timeValue}` : timeValue).trim();
     if (time.match(/\d\d:\d\d/)) {
       const hours = parseInt(time.slice(0, 2), 10);
       const minutes = parseInt(time.slice(3, 5), 10);
@@ -58,7 +59,10 @@ export default class Bedtime {
       await cargo.in('users').update(dbUser.ID, {
         bedtime: time,
       });
-      await interaction.reply(`Ustawiono bedtime na godzinę ${time} ⏰`);
+      await interaction.reply({
+        content: `Ustawiono bedtime na godzinę ${time} ⏰`,
+        ephemeral: true,
+      });
     } else {
       if (dbUser.bedtime === null) {
         await interaction.reply({

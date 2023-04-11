@@ -55,18 +55,18 @@ export default class AdonisBot {
     }
   }
 
-  private onInteractionCreate(interaction: Interaction) {
+  private async onInteractionCreate(interaction: Interaction) {
     if (!interaction.isCommand()) return;
     for (const command of COMMANDS) {
       if (command.name === interaction.commandName) {
-        command.execute(interaction, this.client);
+        await command.execute(interaction, this.client);
         return;
       }
     }
   }
 
-  private onEvery10Mins() {
-    Bedtime.checkBedtime(this.client);
+  private async onEvery10Mins() {
+    await Bedtime.checkBedtime(this.client);
   }
 
   private onMessage(message: Message) {
