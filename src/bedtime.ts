@@ -33,7 +33,8 @@ export default class Bedtime {
   }
 
   private static async setTime(interaction: CommandInteraction, dbUser: User) {
-    const time = interaction.options.get('set')?.value?.toString() ?? '';
+    const timeValue = interaction.options.get('set')?.value?.toString() ?? '';
+    const time = (timeValue.match(/\d:\d\d/) ? `0${timeValue}` : timeValue).trim();
     if (time.match(/\d\d:\d\d/)) {
       const hours = parseInt(time.slice(0, 2), 10);
       const minutes = parseInt(time.slice(3, 5), 10);
@@ -130,12 +131,12 @@ export default class Bedtime {
       // If we are within 1 hour after bedtime
       const isLate = bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz());
       const isLateMidnight = bedtimeTime[0] == '23' && dayjs().tz().format('HH') == '00';
-      if (!(isLate || isLateMidnight)) return false;
+      if (!isLate && !isLateMidnight) return false;
       // If member is online or in voice channel
       if (!(member?.presence.status === 'online' || member?.voice.channel)) return false;
       // If user has skipped bedtime
       if (user.bedtimeSkip === dayjs().tz().format('YYYY-MM-DD')) return false;
-      return false;
+      return true;
     });
     if (!sleepyUsers.length) return;
     const sleepyFormatted = sleepyUsers.map((user) => `<@${user.discordId}>`).join(' ');
