@@ -134,7 +134,7 @@ export default class Bedtime {
         .set('second', 0);
       // If we are within 1 hour after bedtime
       const isLate = bedtime.isBefore(dayjs().tz()) && bedtime.add(1, 'hour').isAfter(dayjs().tz());
-      const isLateMidnight = bedtimeTime[0] == '23' && dayjs().tz().format('HH') == '00';
+      const isLateMidnight = bedtimeTime[0] === '23' && dayjs().tz().format('HH') === '00';
       if (!isLate && !isLateMidnight) return false;
       // If member is online or in voice channel
       if (!(member?.presence.status === 'online' || member?.voice.channel)) return false;

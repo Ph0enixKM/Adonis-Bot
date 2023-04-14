@@ -57,12 +57,9 @@ export default class AdonisBot {
 
   private async onInteractionCreate(interaction: Interaction) {
     if (!interaction.isCommand()) return;
-    for (const command of COMMANDS) {
-      if (command.name === interaction.commandName) {
-        await command.execute(interaction, this.client);
-        return;
-      }
-    }
+    const command = COMMANDS.find((c) => c.name === interaction.commandName);
+    if (!command) return;
+    await command.execute(interaction, this.client);
   }
 
   private async onEvery10Mins() {
