@@ -24,9 +24,8 @@ export const clientConfig = () => ({
     GatewayIntentBits.GuildPresences,
   ],
 });
-export const IS_PROD = !!process.env.SERVER_NAME;
 export const BOT_NAME = 'Adonis Bot';
-export const GENERAL_CHANNEL = IS_PROD ? '💬gigachat' : 'botchat';
+export const GENERAL_CHANNEL = process.env.GENERAL_CHANNEL || 'botchat';
 export const SERVER_NAME = process.env.SERVER_NAME || 'Adonis Bot';
 export const DB_PATH = process.env.DB_PATH || '~';
 export const cargo = new CargoDB('db', DB_PATH);
