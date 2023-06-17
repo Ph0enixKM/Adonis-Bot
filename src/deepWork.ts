@@ -14,17 +14,17 @@ export default class DeepWork {
     switch (true) {
       // if disconnect from vc
       case newState.member && !newState.channel:
-        deleteRoles(this.client, newState.member, ['Deep Work']);
+        deleteRoles(this.client, newState.member, ['1076496079450816543']);
         break;
       // if change to another vc from deep work
-      case newState.member && newState.channel?.name !== 'Deep Work':
+      case newState.member && newState.channel?.id !== '1076496079450816543':
         DeepWork.silentUser(newState, false);
-        deleteRoles(this.client, newState.member, ['Deep Work']);
+        deleteRoles(this.client, newState.member, ['1076496079450816543']);
         break;
       // if joins deep work vc
-      case newState.member && newState.channel?.name === 'Deep Work':
+      case newState.member && newState.channel?.id === '1076496079450816543':
         DeepWork.silentUser(newState, true);
-        addRoles(this.client, newState.member, ['Deep Work']);
+        addRoles(this.client, newState.member, ['1076496079450816543']);
         break;
       default:
         break;

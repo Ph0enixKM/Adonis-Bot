@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/node-cron": "^3.0.7",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.52.0",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
