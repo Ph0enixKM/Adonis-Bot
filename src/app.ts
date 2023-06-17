@@ -53,8 +53,7 @@ export default class AdonisBot {
       const channel = getChannel(this.client, GENERAL_CHANNEL);
       channel.send('Pamiętajcie bracia o 9h snu!');
       channel.setRateLimitPerUser(30);
-    }
-    else if (dayjs().tz().format('HH:mm') === '05:30') {
+    } else if (dayjs().tz().format('HH:mm') === '05:30') {
       const channel = getChannel(this.client, GENERAL_CHANNEL);
       channel.send('Pora wstawać! Czeka was produktywny dzień!');
       channel.setRateLimitPerUser(0);
