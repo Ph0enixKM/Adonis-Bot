@@ -76,10 +76,10 @@ export default class MessageProcessing {
       'Dobranoc szefie 🫶',
       'Śpij dobrze bracie 💪',
       'Śpij spokojnie 😴',
-      'Śpij z aniołami przyjacielu 🙏',
+      'Niech anioły czuwają nad tobą tej nocy 🙏',
       'Wyśpij się porządnie 🌙',
       'Rano będziesz miał energię na cały dzień 🌞',
-      'Jutro zdobędziesz wszystko co chcesz 🤩',
+      'Jutro zdobędziesz wszystko czego chcesz 🤩',
     ];
     if (this.message.content.match(/dobranoc/i)) {
       if (dayjs().format('HH:mm') >= '19:00' && dayjs().format('HH:mm') <= '24:00') {
@@ -96,7 +96,7 @@ export default class MessageProcessing {
       'Zaczynamy dzień od dobrego humoru 🤩',
       'Dzisiaj będzie świetny dzień 🌙',
       'Dzisiaj będzie najlepszy dzień w Twoim życiu 🌞',
-      'Rano jest najlepszą porą dnia na realizację marzeń 🌞',
+      'Poranek jest najlepszą porą dnia na realizację marzeń 🌞',
     ];
     if (this.message.content.match(/dzień dobry/i)) {
       if (dayjs().tz().format('HH:mm') >= '04:00' && dayjs().tz().format('HH:mm') <= '09:00') {
