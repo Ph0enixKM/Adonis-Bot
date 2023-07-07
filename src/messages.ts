@@ -30,7 +30,7 @@ export default class MessageProcessing {
 
   public replyThanks(reply: Message): boolean {
     const reactions = ['🤙', '👌', '👏', '🙏', '🙌', '🤝'];
-    const thanksRegex = /^\s*dzi(ęki|ękuję|ena|ękuwa)\s*$/gi;
+    const thanksRegex = /^\s*dzi(ęki|ękuję|ena|ękuwa|ekuwa|eki|ekuje)\s*$/gi;
     if (this.message.author.bot || !reply.author.bot) return false;
     if (!this.message.content.match(thanksRegex)) return false;
     this.message.react(chooseRandom(reactions));
@@ -58,7 +58,7 @@ export default class MessageProcessing {
   }
 
   public reactAdonis() {
-    const words = ['adonis', 'chad'];
+    const words = ['adonis', 'chad', 'gigachad'];
     const chad = this.getEmojiByName('chad');
     if (words.find((word) => this.messageFormatted.match(word))) {
       this.message.react(chad ?? '🦾');
