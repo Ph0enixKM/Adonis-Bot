@@ -8,6 +8,7 @@ import COMMANDS from './commands';
 import ChatAI from './chat';
 import DeepWork from './deepWork';
 import Bedtime from './bedtime';
+import DeleteGifs from './delete-gifs';
 
 export default class AdonisBot {
   private selfId = '';
@@ -16,6 +17,7 @@ export default class AdonisBot {
   private message: MessageProcessing = {} as MessageProcessing;
   private chat: ChatAI = {} as ChatAI;
   private deepWork: DeepWork = {} as DeepWork;
+  private deleteGifs: DeleteGifs = {} as DeleteGifs;
 
   constructor() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -43,6 +45,7 @@ export default class AdonisBot {
     this.message = new MessageProcessing(this.selfId);
     this.chat = new ChatAI(this.selfId);
     this.deepWork = new DeepWork(this.client);
+    this.deleteGifs = new DeleteGifs();
     await guild.commands.set(COMMANDS);
     // eslint-disable-next-line no-console
     console.log('Connected');
@@ -74,6 +77,7 @@ export default class AdonisBot {
   private onMessage(message: Message) {
     this.message.run(message);
     this.chat.run(message);
+    this.deleteGifs.run(message);
   }
 
   private onVoiceStateUpdate(oldState: VoiceState, newState: VoiceState) {

@@ -5,6 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import dayjs from 'dayjs';
 import * as dotenv from 'dotenv';
 import CargoDB from 'cargodb';
+import os from 'os';
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ export const clientConfig = () => ({
 export const BOT_NAME = 'Adonis Bot';
 export const GENERAL_CHANNEL = process.env.GENERAL_CHANNEL || 'botchat';
 export const SERVER_NAME = process.env.SERVER_NAME || 'Adonis Bot';
-export const DB_PATH = process.env.DB_PATH || '~';
+export const DB_PATH = process.env.DB_PATH || (os.platform() === 'win32') ? '.' : '~';
 export const cargo = new CargoDB('db', DB_PATH);
 
 cargo.create('users');
