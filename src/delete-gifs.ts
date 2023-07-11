@@ -5,8 +5,6 @@ export default class DeleteGifs {
     if (message.attachments.some((attachment: { url: string; }) => attachment.url.match(/\.gif$/))) {
       await message.reply('Nie wklejaj gifów');
       message.delete();
-
     }
   }
 }
-
